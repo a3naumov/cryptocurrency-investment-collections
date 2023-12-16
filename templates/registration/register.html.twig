@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {% trans %} Registration {% endtrans %} {% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+        {{ form_widget(form._token) }}
+
+        <div>
+            {{ form_errors(form) }}
+        </div>
+
+        <div>
+            <div>
+                {{ form_label(form.email) }}
+            </div>
+            <div>
+                {{ form_widget(form.email) }}
+                {{ form_help(form.email) }}
+            </div>
+            <div>
+                {{ form_errors(form.email) }}
+            </div>
+        </div>
+    <br>
+        <div>
+            <div>
+                {{ form_label(form.plainPassword.first) }}
+            </div>
+            <div>
+                {{ form_widget(form.plainPassword.first) }}
+                {{ form_help(form.plainPassword.first) }}
+            </div>
+            <div>
+                {{ form_errors(form.plainPassword.first) }}
+            </div>
+        </div>
+
+    <br>
+    <div>
+        <div>
+            {{ form_label(form.plainPassword.second) }}
+        </div>
+        <div>
+            {{ form_widget(form.plainPassword.second) }}
+            {{ form_help(form.plainPassword.second) }}
+        </div>
+        <div>
+            {{ form_errors(form.plainPassword.second) }}
+        </div>
+    </div>
+
+    <br>
+    <div>
+        {{ form_row(form.submit) }}
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
