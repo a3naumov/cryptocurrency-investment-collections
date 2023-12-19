@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Enum\User\Status;
 use App\Repository\UserRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -15,38 +17,63 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(
+        name: 'id',
+        type: Types::INTEGER,
+        unique: true,
+        nullable: false,
+    )]
     private int $id;
 
-    #[ORM\Column(length: 180, unique: true)]
+    #[ORM\Column(
+        name: 'email',
+        type: Types::STRING,
+        length: 180,
+        unique: true,
+        nullable: false,
+    )]
     private string $email;
 
-    #[ORM\Column]
+    #[ORM\Column(
+        name: 'roles',
+        type: Types::JSON,
+        unique: false,
+        nullable: false,
+    )]
     private array $roles = [];
 
-    #[ORM\Column]
+    #[ORM\Column(
+        name: 'password',
+        type: Types::STRING,
+        length: 255,
+        unique: false,
+        nullable: false,
+    )]
     private string $password;
 
-    /**
-     * @return int
-     */
+    #[ORM\Column(
+        name: 'status',
+        type: Types::SMALLINT,
+        unique: false,
+        nullable: false,
+        enumType: Status::class,
+        options: [
+            'default' => Status::Pending,
+            'unsigned' => true,
+        ],
+    )]
+    private Status $status = Status::Pending;
+
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getEmail(): string
     {
         return $this->email;
     }
 
-    /**
-     * @param string $email
-     * @return self
-     */
     public function setEmail(string $email): self
     {
         $this->email = $email;
@@ -54,17 +81,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getUserIdentifier(): string
     {
         return $this->email;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getRoles(): array
     {
         $roles = $this->roles;
@@ -75,7 +96,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @param string[] $roles
-     * @return $this
+     * @return self
      */
     public function setRoles(array $roles): self
     {
@@ -84,18 +105,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getPassword(): string
     {
         return $this->password;
     }
 
-    /**
-     * @param string $password
-     * @return self
-     */
     public function setPassword(string $password): self
     {
         $this->password = $password;
@@ -103,11 +117,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function eraseCredentials(): void
     {
         return;
+    }
+
+    public function getStatus(): Status
+    {
+        return $this->status;
+    }
+
+    public function setStatus(Status $status): User
+    {
+        $this->status = $status;
+
+        return $this;
     }
 }
