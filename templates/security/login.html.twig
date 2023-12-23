@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {% trans %} Login {% endtrans %} {% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+    {{ form_widget(form._token) }}
+
+    <div>
+        {{ form_errors(form) }}
+        {{ error }}
+    </div>
+
+    <div>
+        <div>
+            {{ form_label(form.email) }}
+        </div>
+        <div>
+            {{ form_widget(form.email, {'value': lastUsername}) }}
+            {{ form_help(form.email) }}
+        </div>
+        <div>
+            {{ form_errors(form.email) }}
+        </div>
+    </div>
+
+    <br>
+    <div>
+        <div>
+            {{ form_label(form.plainPassword) }}
+        </div>
+        <div>
+            {{ form_widget(form.plainPassword) }}
+            {{ form_help(form.plainPassword) }}
+        </div>
+        <div>
+            {{ form_errors(form.plainPassword) }}
+        </div>
+    </div>
+
+    <br>
+    <div>
+        <div>
+            {{ form_label(form._remember_me) }}
+        </div>
+        <div>
+            {{ form_widget(form._remember_me) }}
+        </div>
+    </div>
+
+    <br>
+    <div>
+        {{ form_row(form.submit) }}
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
